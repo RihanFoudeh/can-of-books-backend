@@ -70,6 +70,7 @@ server.get('/', homeHandler);
 server.get('/book', bookHandler);
 server.post('/books', addBooks);
 server.delete('/Books/:id', deleteCatHandler);
+server.put('/updatebooks/:id',updatebookHandler);
 
 //Functions Handlers
 function homeHandler(req, res) {
@@ -143,7 +144,23 @@ function deleteCatHandler(req, res) {
 
 
 
-
+function updatebookHandler(req,res) {
+    const id = req.params.id;
+    const {bookTitle, bookDescription, bookStatus,bookEmail} = req.body;
+    
+    Modelbook.findByIdAndUpdate(id,{bookTitle,bookDescription,bookStatus},(err,result)=>{
+        Modelbook.find({ownerEmail:email},(err,result)=>{
+            if(err)
+            {
+                console.log(err);
+            }
+            else
+            {
+                res.send(result);
+            }
+        })
+    })
+}
 
 
 server.listen(PORT, () => {
